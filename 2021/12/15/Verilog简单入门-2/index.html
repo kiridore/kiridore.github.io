@@ -24,7 +24,7 @@
 <meta property="og:description" content="上一篇中我们介绍了线网、模块和简单组合逻辑。下面将会引入大于1bit长的信号，也就是向量(vector)。然后我们将详细学习模块的使用，并在模块中实例外部模块来复用代码。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-15T10:26:14.000Z">
-<meta property="article:modified_time" content="2021-12-15T10:30:05.248Z">
+<meta property="article:modified_time" content="2021-12-15T10:57:48.710Z">
 <meta property="article:author" content="kiritani dore">
 <meta property="article:tag" content="Verilog">
 <meta name="twitter:card" content="summary_large_image">
@@ -196,7 +196,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3k 字
+      3.3k 字
     </span>
   
 
@@ -205,7 +205,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9 分钟
+      10 分钟
     </span>
   
 
@@ -256,7 +256,7 @@
 <li>z 高阻态, 常见于信号没有驱动的逻辑结果。逻辑值与上下拉的状态有关，上拉电路为1，下拉电路为0</li>
 </ul>
 <p>数字声明时，合法的进制表示有四种，包括：十进制(‘d 或 ‘D)，十六进制(‘h 或 ‘H)，二进制（’b 或 ‘B），八进制（’o 或 ‘O）。数值可指明位宽，也可不指明位宽。</p>
-<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-number">4</span>b&#x27;<span class="hljs-number">0101</span>     <span class="hljs-comment">//表示4bit位宽的二进制数“0101”</span><br><span class="hljs-number">&#x27;d100</span>       <span class="hljs-comment">//表示十进制数“100”，不指定位宽时根据编译器自动分配，常见为32位</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-number">4&#x27;b0101</span>     <span class="hljs-comment">//表示4bit位宽的二进制数“0101”</span><br><span class="hljs-number">&#x27;d100</span>       <span class="hljs-comment">//表示十进制数“100”，不指定位宽时根据编译器自动分配，常见为32位</span><br></code></pre></td></tr></table></figure>
 <p>声明负数时，需要将负号写在数值的<strong>最左侧</strong>：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs rust">-<span class="hljs-number">32</span><span class="hljs-symbol">&#x27;h12A8F</span>     <span class="hljs-comment">//合法</span><br><span class="hljs-number">3</span><span class="hljs-symbol">&#x27;b</span>-<span class="hljs-number">100</span>     <span class="hljs-comment">//非法</span><br></code></pre></td></tr></table></figure>
 
@@ -292,6 +292,10 @@
 <li>如果 2 个操作数位宽不相等，则用 0 向左扩展补充较短的操作数。</li>
 <li>取反操作符只有一个操作数，它对操作数的每 1bit 数据进行取反操作。</li>
 </ul>
+<h4 id="打包-packed-与解包-unpacked"><a href="#打包-packed-与解包-unpacked" class="headerlink" title="打包(packed)与解包(unpacked)"></a>打包(packed)与解包(unpacked)</h4><p>虽然在前面的向量声明中提到，需要把向量位宽写在类型和向量名之间，但实际上也有一种与C语言数组类似的语法，将向量宽度写在向量名之后，这样就形成了一个解包(unpacked)向量。</p>
+<p>而利用这个特性，我们就可以在Verilog中实现“二维数组”，例如:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">reg</span> <span class="hljs-selector-attr">[7:0]</span> <span class="hljs-selector-tag">mem</span> <span class="hljs-selector-attr">[255:0]</span>;   <span class="hljs-comment">// 256个解包元素, 每一个都是八位宽的reg向量</span><br><span class="hljs-selector-tag">reg</span> <span class="hljs-selector-tag">mem2</span> <span class="hljs-selector-attr">[28:0]</span>;         <span class="hljs-comment">// 29个解包元素, 每个是一位的reg变量</span><br></code></pre></td></tr></table></figure>
+<p>打包的向量只能使用1bit的类型作为元素，因此其实际上是一个整体，可以进行加减操作或者求值。而解包向量中的元素没有限制，但是无法作为一个整体被计算，只能看作是多个元素的“集合”。</p>
 <h2 id="模块-module"><a href="#模块-module" class="headerlink" title="模块(module)"></a>模块(module)</h2><div class="note note-info">
             <p><span style = "color:#428BCA; font-size:1.2em;"><strong>HDLbit相关题目</strong></span><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Vectorgates">Module</a><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Gates4">Four-input gate</a></p>
           </div>
@@ -315,7 +319,8 @@
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/verilog-tutorial.html">菜鸟教程-Verilog教程</a>
 <a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Problem_sets">HDLbit</a>
 <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56646479">HDLBits: 在线学习 Verilog</a>
-<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="http://www.asic-world.com/systemverilog/data_types10.html">Data type part-x</a>
+<a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
             </div>
             <hr>
             <div>
