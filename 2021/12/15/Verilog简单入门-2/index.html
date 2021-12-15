@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="在上一篇文章基础上引入多位宽的向量，并详细介绍可复用代码块模块(module)的使用方法。">
+  <meta name="author" content="kiritani dore">
+  <meta name="keywords" content="">
+  <meta name="description" content="在上一篇文章基础上引入多位宽的向量，并详细介绍可复用代码块模块(module)的使用方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Verilog简单入门#2">
+<meta property="og:url" content="http://example.com/2021/12/15/Verilog%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8-2/index.html">
+<meta property="og:site_name" content="Dore&#39;s Blog">
+<meta property="og:description" content="在上一篇文章基础上引入多位宽的向量，并详细介绍可复用代码块模块(module)的使用方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-15T10:26:14.000Z">
+<meta property="article:modified_time" content="2021-12-15T10:28:30.474Z">
+<meta property="article:author" content="kiritani dore">
+<meta property="article:tag" content="Verilog">
+<meta name="twitter:card" content="summary_large_image">
+  
+  <title>Verilog简单入门#2 - Dore&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":40,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"RkYkOuqMIP5y47OpzLyEppvg-gzGzoHsz","app_key":"U1HGvn6LheqEKnt8LRGWT7uN","server_url":"https://rkykouqm.lc-cn-n1-shared.com","path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>桐谷Dore</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/wallpaper/ArtStation%20-%20L1F3%20SPEAR,%20Ismail%20Inceoglu.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Verilog简单入门#2">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-12-15 18:26" pubdate>
+        2021年12月15日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Verilog简单入门#2</h1>
+            
+            <div class="markdown-body">
+              <p>在上一篇文章基础上引入多位宽的向量，并详细介绍可复用代码块模块(module)的使用方法。</p>
+<span id="more"></span>
+<h1 id="向量-vector-与模块-module"><a href="#向量-vector-与模块-module" class="headerlink" title="向量(vector)与模块(module)"></a>向量(vector)与模块(module)</h1><p><a href="">上一篇</a>中我们介绍了线网、模块和简单组合逻辑。下面将会引入大于1bit长的信号，也就是向量(vector)。然后我们将详细学习模块的使用，并在模块中实例外部模块来复用代码。</p>
+<h2 id="向量-vector"><a href="#向量-vector" class="headerlink" title="向量(vector)"></a>向量(vector)</h2><p>在Verilog中，位宽大于1的数据，都将使用向量进行保存</p>
+<h3 id="数值表示"><a href="#数值表示" class="headerlink" title="数值表示"></a>数值表示</h3><p>verilog中不同于一般编程语言，它包含了四种不同的值来表示硬件电路中的电平逻辑：</p>
+<ul>
+<li>1 高电平 或 逻辑“真”</li>
+<li>0 低电平 或 逻辑“假”</li>
+<li>x 不定值 未知，表示电路中可能为<code>0</code>或<code>1</code></li>
+<li>z 高阻态, 常见于信号没有驱动的逻辑结果。逻辑值与上下拉的状态有关，上拉电路为1，下拉电路为0</li>
+</ul>
+<p>数字声明时，合法的进制表示有四种，包括：十进制(‘d 或 ‘D)，十六进制(‘h 或 ‘H)，二进制（’b 或 ‘B），八进制（’o 或 ‘O）。数值可指明位宽，也可不指明位宽。</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-number">4</span>b&#x27;<span class="hljs-number">0101</span>     <span class="hljs-comment">//表示4bit位宽的二进制数“0101”</span><br><span class="hljs-number">&#x27;d100</span>       <span class="hljs-comment">//表示十进制数“100”，不指定位宽时根据编译器自动分配，常见为32位</span><br></code></pre></td></tr></table></figure>
+<p>声明负数时，需要将负号写在数值的<strong>最左侧</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs rust">-<span class="hljs-number">32</span><span class="hljs-symbol">&#x27;h12A8F</span>     <span class="hljs-comment">//合法</span><br><span class="hljs-number">3</span><span class="hljs-symbol">&#x27;b</span>-<span class="hljs-number">100</span>     <span class="hljs-comment">//非法</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="向量的使用"><a href="#向量的使用" class="headerlink" title="向量的使用"></a>向量的使用</h3><h4 id="声明与取值"><a href="#声明与取值" class="headerlink" title="声明与取值"></a>声明与取值</h4><div class="note note-info">
+            <p><span style = "color:#428BCA; font-size:1.2em;"><strong>HDLbit相关题目</strong></span><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Vector0">Vectors</a><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Vector1">Vectors in more detail</a><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Vector2">Vectors part select</a></p>
+          </div>
+<p>和C语法有所不同的是，verilog的向量声明需要把向量宽度写在类型后，向量名之前，即：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">wire</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] w;         <span class="hljs-comment">// 8-bit wire</span><br><span class="hljs-keyword">reg</span>  [<span class="hljs-number">4</span>:<span class="hljs-number">1</span>] x;         <span class="hljs-comment">// 4-bit reg</span><br><span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [<span class="hljs-number">0</span>:<span class="hljs-number">0</span>] y;   <span class="hljs-comment">// 1-bit reg that is also an output port (this is still a vector)</span><br><span class="hljs-keyword">input</span> <span class="hljs-keyword">wire</span> [<span class="hljs-number">3</span>:-<span class="hljs-number">2</span>] z;  <span class="hljs-comment">// 6-bit wire input (negative ranges are allowed)</span><br><span class="hljs-keyword">output</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] a;       <span class="hljs-comment">// 4-bit output wire. Type is &#x27;wire&#x27; unless specified otherwise.</span><br><span class="hljs-keyword">wire</span> [<span class="hljs-number">0</span>:<span class="hljs-number">7</span>] b;         <span class="hljs-comment">// 8-bit wire where b[0] is the most-significant bit.</span><br></code></pre></td></tr></table></figure>
+<p>一般都将高位写在左侧，低位写在右侧，虽然有一些违背直觉，但后面我们就会看到这样做的方便之处。</p>
+<p>要获取向量中单个bit的值，就与C语言中数组的取值方式一样，但同时也可以取向量的一段：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">assign</span> out = w[<span class="hljs-number">3</span>]; <br><span class="hljs-keyword">assign</span> out2 = w[<span class="hljs-number">3</span>:<span class="hljs-number">0</span>]; <span class="hljs-comment">//取向量的低三位</span><br></code></pre></td></tr></table></figure>
+<p>需要注意的是，对向量的范围取值，需要和向量声明时格式相同。也就是说声明时左侧为高位，在取值时也只能遵循左侧为高位的写法：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">assign</span> out = w[<span class="hljs-number">0</span>:<span class="hljs-number">3</span>]; <span class="hljs-comment">//非法，和声明不符</span><br><span class="hljs-keyword">assign</span> out2 = b[<span class="hljs-number">7</span>:<span class="hljs-number">0</span>]; <span class="hljs-comment">//同样非法</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="向量连接"><a href="#向量连接" class="headerlink" title="向量连接"></a>向量连接</h4><div class="note note-info">
+            <p><span style = "color:#428BCA; font-size:1.2em;"><strong>HDLbit相关题目</strong></span><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Vector3">Vector conncatenation operator</a><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Vector4">Replication Vector</a><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Vector5">More replication</a></p>
+          </div>
+<p>上面讲了如何将向量分成多个区域，下面介绍如何使用<code>&#123;...&#125;</code>将多个向量（或线网变量）合并为一个大的向量</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">wire</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] w; <br><span class="hljs-keyword">wire</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] b;  <br><span class="hljs-keyword">assign</span> out = &#123;w, b&#125;;    <span class="hljs-comment">//连接形成一个高七位为w，低四位为b的向量</span><br></code></pre></td></tr></table></figure>
+<p>上面代码中使用<code>&#123;...&#125;</code>将两个向量链接起来，其中左侧的为高位，右侧为低位，正好也就配合之前声明时，左侧为高位右侧为低位的设计。</p>
+<p>但是某些时候，我们需要将一个向量复制多次，合并为一个更宽的向量，按照上面的做法就需要<code>assign a = &#123;b,b,b,b,b&#125;</code>。<strong>复制</strong>操作就允许重复多次同一个向量，并把它们连接在一起</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&#123;num&#123;vector&#125;&#125;<br></code></pre></td></tr></table></figure>
+<p>表示将向量<code>vector</code>重复<code>num</code>次，并把他们连接在一起。下面是一些复制操作的例子：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&#123;<span class="hljs-number">5</span>&#123;<span class="hljs-number">1&#x27;b1</span>&#125;&#125;           <span class="hljs-comment">// 5&#x27;b11111 (or 5&#x27;d31 or 5&#x27;h1f)</span><br>&#123;<span class="hljs-number">2</span>&#123;a,b,c&#125;&#125;          <span class="hljs-comment">// The same as &#123;a,b,c,a,b,c&#125;</span><br>&#123;<span class="hljs-number">3&#x27;d5</span>, &#123;<span class="hljs-number">2</span>&#123;<span class="hljs-number">3&#x27;d6</span>&#125;&#125;&#125;   <span class="hljs-comment">// 9&#x27;b101_110_110. It&#x27;s a concatenation of 101 with</span><br>                    <span class="hljs-comment">// the second vector, which is two copies of 3&#x27;b110.</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="逻辑运算与位运算"><a href="#逻辑运算与位运算" class="headerlink" title="逻辑运算与位运算"></a>逻辑运算与位运算</h4><div class="note note-info">
+            <p><span style = "color:#428BCA; font-size:1.2em;"><strong>HDLbit相关题目</strong></span><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Vectorgates">Bitwire operator</a><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Gates4">Four-input gate</a></p>
+          </div>
+<p>之前我们说对于1bit位宽的信号，对其进行逻辑运算和位运算是没有区别的，但在操作数为向量情况下就需要分开讨论。</p>
+<p>逻辑运算时，任何不是0的数，都被看作<code>true</code>，任何等于0的数，都被看做<code>false</code><br>按位运算略显复杂，下面分情况讨论：</p>
+<ul>
+<li>按位运算对两个操作数每bit进行按位操作</li>
+<li>如果 2 个操作数位宽不相等，则用 0 向左扩展补充较短的操作数。</li>
+<li>取反操作符只有一个操作数，它对操作数的每 1bit 数据进行取反操作。</li>
+</ul>
+<h2 id="模块-module"><a href="#模块-module" class="headerlink" title="模块(module)"></a>模块(module)</h2><div class="note note-info">
+            <p><span style = "color:#428BCA; font-size:1.2em;"><strong>HDLbit相关题目</strong></span><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Vectorgates">Module</a><br><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Gates4">Four-input gate</a></p>
+          </div>
+<p>类似C语言的函数，模块(module)的目的就在于将不同的电路模块化，便于复用。</p>
+<blockquote>
+<p>注意：一个模块的代码不会写在另一个模块的主体里面（不同模块的代码不会嵌套），这与C语言中的函数定义有一定的不同。</p>
+</blockquote>
+<p>模块的格式相对固定，具体如下：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> top_module(port1, port2, port3)<br>    <span class="hljs-comment">//assign something.</span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+
+<p>在对一个模块进行实例化时，直接使用<code>module_name instance_name(port1, port2...)；</code>即可，这里涉及到对实例化的模块内部传递信号的问题，在verilog中传递信号分为两种方法，分别是“通过位置的”和“通过端口名的”</p>
+<h3 id="将信号与模块链接的方式"><a href="#将信号与模块链接的方式" class="headerlink" title="将信号与模块链接的方式"></a>将信号与模块链接的方式</h3><p>首先假设我们有一个形如：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-keyword">module</span> <span class="hljs-keyword">mod</span><span class="hljs-constructor">_a(<span class="hljs-params">input</span> <span class="hljs-params">in1</span>, <span class="hljs-params">input</span> <span class="hljs-params">in2</span>, <span class="hljs-params">output</span> <span class="hljs-params">out</span>)</span>;<br>    <span class="hljs-comment">//DD SOMETHING....</span><br>endmodule<br></code></pre></td></tr></table></figure>
+<p>的模块，接下来说明两种方式是如何在实例化模块是将其端口和信号连接的。</p>
+<h4 id="通过位置连接"><a href="#通过位置连接" class="headerlink" title="通过位置连接"></a>通过位置连接</h4><p>这种语法与C语言的函数调用更相似，实例化一个模块后，直接将想要传入的信号写入到对应的位置即可。下面的代码的实例化了一个<code>mod_a</code>模块，并将其实例命名为<code>instance1</code>，然后将<code>wa</code>传入他的<strong>第一个</strong>端口<code>in1</code>，<code>wb</code>传入<strong>第二个</strong>端口<code>in2</code>，<code>wc</code>传入<strong>第三个</strong>端口<code>out</code>。</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gcode">mod_a i<span class="hljs-symbol">nstance1</span><span class="hljs-comment">(wa,wb,wc)</span>;<br></code></pre></td></tr></table></figure>
+<p>这种做法有一个缺点，一旦模块的列表发生了变化，接下来所有的实例化语句都需要进行修改来匹配修改后的模块。</p>
+<h4 id="通过端口名连接"><a href="#通过端口名连接" class="headerlink" title="通过端口名连接"></a>通过端口名连接</h4><p>这种语法允许指定外部信号要绑定的模块端口，相比于上一种写法更加冗长，例如要以端口名连接信号来完成之前代码的功能：</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">mod_a instance1(<span class="hljs-variable">.in1</span>(wa),<span class="hljs-variable">.in2</span>(wb),<span class="hljs-variable">.out</span>(wc));<br></code></pre></td></tr></table></figure>
+<p>这样就通过<strong>端口名称</strong>将信号与端口连接起来。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/verilog-tutorial.html">菜鸟教程-Verilog教程</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://hdlbits.01xz.net/wiki/Problem_sets">HDLbit</a>
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/56646479">HDLBits: 在线学习 Verilog</a>
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%8A%80%E6%9C%AF/Verilog/">Verilog</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Verilog/">Verilog</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/12/14/Verilog%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8-1/">
+                        <span class="hidden-mobile">Verilog简单入门#1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"RkYkOuqMIP5y47OpzLyEppvg-gzGzoHsz","appKey":"U1HGvn6LheqEKnt8LRGWT7uN","path":"window.location.pathname","placeholder":"留下邮箱方便后续回复~","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":true,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
