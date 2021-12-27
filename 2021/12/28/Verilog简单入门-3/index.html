@@ -24,7 +24,7 @@
 <meta property="og:description" content="引入编程语言中最常用的循环和分支结构，并且介绍其依赖的语句块。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-12-27T16:55:30.000Z">
-<meta property="article:modified_time" content="2021-12-27T16:56:55.421Z">
+<meta property="article:modified_time" content="2021-12-27T17:12:21.842Z">
 <meta property="article:author" content="kiritani dore">
 <meta property="article:tag" content="Verilog">
 <meta name="twitter:card" content="summary_large_image">
@@ -196,7 +196,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.3k 字
+      5.8k 字
     </span>
   
 
@@ -205,7 +205,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      16 分钟
+      18 分钟
     </span>
   
 
@@ -247,7 +247,8 @@
             <div class="markdown-body">
               <p>引入编程语言中最常用的循环和分支结构，并且介绍其依赖的语句块。</p>
 <span id="more"></span>
-<h1 id="语句块、分支与循环语句"><a href="#语句块、分支与循环语句" class="headerlink" title="语句块、分支与循环语句"></a>语句块、分支与循环语句</h1><p>由于Verilog中大括号用来把多个信号连接成一个向量了，因此就将层次化的语句结构使用关键字作为开头和结尾。如果Verilog中只有并行描述语句，那么循环和分支结构就将变得没有意义，因此在学习分支与循环语句之前，先介绍语句块，以及用于修饰语句/语句块的关键字。</p>
+<h1 id="语句块、分支与循环语句"><a href="#语句块、分支与循环语句" class="headerlink" title="语句块、分支与循环语句"></a>语句块、分支与循环语句</h1><p>Verilog已经将大括号定义为把多个信号连接成一个向量的运算符，因此层次化的语句结构就不得不使用关键字<code>begin...end</code>作为界标。</p>
+<p>在并行的语句中使用循环和分支语句显然是没有意义的，因此在学习分支与循环语句之前，先介绍顺序执行的语句块。</p>
 <h2 id="语句块"><a href="#语句块" class="headerlink" title="语句块"></a>语句块</h2><p>Verilog 语句块提供了将两条或更多条语句组成语法结构上相当于一条一句的机制。主要包括两种类型:顺序块和并行块。</p>
 <div class="note note-warning">
             <p>虽然语句块充当了<code>{...}</code>的作用，但是在verilog中，单独的语句块并没有意义，必须要搭配<code>always</code>和<code>inital</code>使用，或者在分支和循环语句中做为多行分支语句或多行循环语句。</p>
@@ -298,8 +299,10 @@
 <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-comment">// synthesis verilog_input_version verilog_2001</span><br><span class="hljs-keyword">module</span> top_module (<br>    <span class="hljs-keyword">input</span> [<span class="hljs-number">7</span>:<span class="hljs-number">0</span>] in,<br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [<span class="hljs-number">2</span>:<span class="hljs-number">0</span>] pos  );<br>    <span class="hljs-keyword">always</span> @(*)<br>        <span class="hljs-keyword">casez</span>(in)<br>            <span class="hljs-number">8&#x27;bzzzzzzz1</span>: pos = <span class="hljs-number">3&#x27;d0</span>;<br>            <span class="hljs-number">8&#x27;bzzzzzz1z</span>: pos = <span class="hljs-number">3&#x27;d1</span>;<br>            <span class="hljs-number">8&#x27;bzzzzz1zz</span>: pos = <span class="hljs-number">3&#x27;d2</span>;<br>            <span class="hljs-number">8&#x27;bzzzz1zzz</span>: pos = <span class="hljs-number">3&#x27;d3</span>;<br>            <span class="hljs-number">8&#x27;bzzz1zzzz</span>: pos = <span class="hljs-number">3&#x27;d4</span>;<br>            <span class="hljs-number">8&#x27;bzz1zzzzz</span>: pos = <span class="hljs-number">3&#x27;d5</span>;<br>            <span class="hljs-number">8&#x27;bz1zzzzzz</span>: pos = <span class="hljs-number">3&#x27;d6</span>;<br>            <span class="hljs-number">8&#x27;b1zzzzzzz</span>: pos = <span class="hljs-number">3&#x27;d7</span>;<br>            <span class="hljs-keyword">default</span>: pos = <span class="hljs-number">3&#x27;d0</span>;<br>        <span class="hljs-keyword">endcase</span><br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
 <p>在<code>casez</code>分支中，所有的不定值都用<code>z</code>代替，表示一个可以匹配任何信号的通配符。很显然这样一来，就会出现一个问题，<code>10000001</code>又可以与第一条匹配，又可以与最后一条匹配。为了解决这个问题，编译器会从上往下逐条进行比较，并且仅运行第一次匹配成功的分支。这就意味着在<code>casez/casex</code>分支中，各个分支其实是带有优先级的。</p>
 <blockquote>
-<p>其实普通<code>case</code>也有，不过规范情况下各个分支不应该有重叠）</p>
+<p>其实普通<code>case</code>也有，不过规范情况下各个分支不应该有重叠</p>
 </blockquote>
+<h3 id="条件运算符-更简单的分支语句"><a href="#条件运算符-更简单的分支语句" class="headerlink" title="条件运算符-更简单的分支语句"></a>条件运算符-更简单的分支语句</h3><p>和C语言一样，同样我们可以用<code>condition ? if_ture : if_false</code>表示一个轻量级的分支结构。从而避免为了一个<code>if-else</code>写一个长长的<code>always</code>块。例如:</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog">(<span class="hljs-number">0</span> ? <span class="hljs-number">3</span> : <span class="hljs-number">5</span>)     <span class="hljs-comment">// This is 5 because the condition is false.</span><br>(sel ? b : a)   <span class="hljs-comment">// A 2-to-1 multiplexer between a and b selected by sel.</span><br></code></pre></td></tr></table></figure>
 <h2 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h2><p>没什么可介绍的，和C语言大多类似，把<code>begin...end</code>看作<code>&#123;...&#125;</code>就非常好理解了。</p>
 <h3 id="for-循环"><a href="#for-循环" class="headerlink" title="for 循环"></a>for 循环</h3><p>和C语言使用完全一致，唯一需要注意的是在Verilog中不支持自增运算，也就是说不得不用<code>i = i + 1</code>d代替<code>i++</code>，使用样例:</p>
 <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">integer</span>      i ;<br><span class="hljs-keyword">reg</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>]    counter2 ;<br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    counter2 = <span class="hljs-number">&#x27;b0</span> ;<br>    <span class="hljs-keyword">for</span> (i=<span class="hljs-number">0</span>; i&lt;=<span class="hljs-number">10</span>; i=i+<span class="hljs-number">1</span>) <span class="hljs-keyword">begin</span><br>        #<span class="hljs-number">10</span> ;<br>        counter2 = counter2 + <span class="hljs-number">1&#x27;b1</span> ;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
@@ -314,8 +317,14 @@
 <h3 id="forever-循环"><a href="#forever-循环" class="headerlink" title="forever 循环"></a>forever 循环</h3><p>无限循环，相当于<code>while(true)</code>，不过在Verilog中无限循环还是有他存在的意义，因为Verilog是一个并行性的语言，不用担心程序卡死。通常，forever 循环是和时序控制结构配合使用的，比如说我们可以用<code>forever</code>做一个简单的时钟激励:</p>
 <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">reg</span> clk ;<br><span class="hljs-keyword">initial</span> <span class="hljs-keyword">begin</span><br>    clk = <span class="hljs-number">0</span> ;<br>    <span class="hljs-keyword">forever</span> <span class="hljs-keyword">begin</span><br>        clk = ~clk ;<br>        #<span class="hljs-number">5</span> ;<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
 <p>在模拟一开始，就会开始运行这个无限循环，使<code>clk</code>成为一个周期为10的时钟信号。</p>
+<h3 id="规约运算-循环的简单替代品"><a href="#规约运算-循环的简单替代品" class="headerlink" title="规约运算-循环的简单替代品"></a>规约运算-循环的简单替代品</h3><p>有些时候我们打算对一个向量里的所有位进行连续逻辑运算，例如对一个向量所有位进行<code>AND</code>运算，如果使用循环，就不得这么写:</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">wire</span>[<span class="hljs-number">10</span>:<span class="hljs-number">0</span>] vec;<br><span class="hljs-keyword">wire</span> rel;<br><span class="hljs-keyword">reg</span> i;<br>...<br><span class="hljs-keyword">always</span> *()<span class="hljs-keyword">begin</span>:<br>    rel = vec[<span class="hljs-number">0</span>];<br>    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i&lt;<span class="hljs-number">10</span>; i = i+<span class="hljs-number">1</span>) <span class="hljs-keyword">begin</span>:<br>        rel = rel &amp; vec[i];<br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+<p>不得不为了这么一个简单的操作写一个“冗长”的循环，在Verilog中提供了一个更简单的运算，称为规约运算符。同样是上面的例子，就可以改写为:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wire</span> rel;<br><span class="hljs-attribute">wire</span>[<span class="hljs-number">10</span>:<span class="hljs-number">0</span>] vec;<br><span class="hljs-attribute">assign</span> rel = &amp; vec[<span class="hljs-number">10</span>:<span class="hljs-number">0</span>];<br></code></pre></td></tr></table></figure>
+
+<p>这就相当于对vec中所有的位连续进行<code>AND</code>运算，相对更加方便，同理其他的位运算也可以这么使用。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span>硬件设计验证 基于模拟与形式的方法 simulation and formal method-based approaches[M].,:359.
-<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span>(菜鸟教程)[<a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/verilog-case.html]">https://www.runoob.com/w3cnote/verilog-case.html]</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span>菜鸟教程[<a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/verilog-case.html]">https://www.runoob.com/w3cnote/verilog-case.html]</a>
 <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span>Verilog数字系统设计教程[M].,:478.
 <a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
             </div>
