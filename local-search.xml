@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Hello 2020,too</title>
+    <link href="/2022/02/28/2020-too/"/>
+    <url>/2022/02/28/2020-too/</url>
+    
+    <content type="html"><![CDATA[<p>第三旋臂边缘的一颗蓝色行星上的碳基生物正在庆祝他们所在的行星又在该恒星系里完成了一次公转。</p><span id="more"></span><h2 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h2><p>&ensp;&ensp;&ensp;&ensp;作为2022年第一篇博客，一直想要在新年之际写点什么，无奈从2022元旦，一路拖到2022春节，最后拖到参加实习，终于有机会坐下来，慢慢回顾自己2021年的生活。我们赖以生存的星球又围绕着它的恒星完成了一次公转，人们都认为这将是非同寻常的一年，然而对于地球本身，这不过是这颗星球在漫长时间平凡无奇的一圈。这短短一年对于历史进程来说是短暂的，但对于一个人，却显得无比漫长。</p><p>&ensp;&ensp;&ensp;&ensp;小学时，每周的全校总结最喜欢用的开头就是“光影似箭，日月如梭”，如今看来确实有几分道理。那时每周都会对上一周进行一个总结，讲一讲各班在上一周工作生活的情况，而对刚刚过去不久的2021年，对它总结应该是“变化”。</p><p>&ensp;&ensp;&ensp;&ensp;对个人而言，最大的变化应该是就业方向重新回到了自己的本专业。去年11月我暂缓了长达一年的绘画练习，转头找到了一个计算机专业的工作。非常巧合的是，这是我人生中参加的第一场面试，而我也是公司在我就读的大学所招的第一个人。在种种机缘巧合下，双方对对方都很满意，也就很顺利的成为了该公司的新实习生。从2020年开始学习绘画，又到2022年重新回到计算机，虽然看似是一个无意义的轮回，但这一年的学习为未来的我培养了一个足以抵御生活中种种困难的业余爱好。在未来有一天，生活的压力将要压倒我的时候，可能这个爱好会帮助我度过人生中最艰难的时期。</p><p>&ensp;&ensp;&ensp;&ensp;而对于世界，2021变化之大，可能不太需要我来总结，生活在地球上的每个人都能切身体会到。对内，我们基本解决了新冠疫情，经济开始复苏；对外，以美国为首的西方政治体系正在缓慢衰弱。不管怎么说，旧秩序在瓦解，新秩序正在形成，整个世界正在变成我们不再熟悉的的样子。</p><h2 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h2><p>&ensp;&ensp;&ensp;&ensp;按照惯例，每一年对喜欢给自己列一个新年计划，虽然在时间的连续性并不会因为年份变更发生变化，但是心理感受上总会有点不同。以下计划并无轻重缓急之分，先后顺序仅仅是按照长度。</p><ul><li><input disabled="" type="checkbox"> 把前一年学画画的笔记整理后搬运到博客</li><li><input disabled="" type="checkbox"> 参加最后一次大学生游戏制作大赛</li><li><input disabled="" type="checkbox"> 完成自己的放置游戏</li><li><input disabled="" type="checkbox"> 持续更新自己的博客</li><li><input disabled="" type="checkbox"> 养成锻炼习惯</li><li><input checked="" disabled="" type="checkbox"> 养一盆绿植                            (2022-03-07)</li><li><input disabled="" type="checkbox"> 坚持画画</li><li><input disabled="" type="checkbox"> 顺利毕业</li><li><input disabled="" type="checkbox"> 顺利转正</li><li><input disabled="" type="checkbox"> 多读书</li><li><input disabled="" type="checkbox"> 练字</li><li><input disabled="" type="checkbox"> 开心的活到2023</li></ul><h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>&ensp;&ensp;&ensp;&ensp;文笔稚嫩，权当随笔杂记，修修改改，聊以满足自己突然溢出的表达欲，还望各位以及未来的自己不要耻笑。</p><p>最后<br><br>祝我自己好运<br><br>也祝地球好运<br><br><br><br>2022-2-28<br><br>长沙</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>杂文</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>杂文</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Verilog简单入门#3</title>
     <link href="/2021/12/28/Verilog%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8-3/"/>
     <url>/2021/12/28/Verilog%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8-3/</url>
@@ -114,7 +139,7 @@
   
   
   <entry>
-    <title>cocos2d-x学习记录#1</title>
+    <title>cocos2d-x 学习#1：环境搭建到创建工程</title>
     <link href="/2021/12/08/cocos2d-x%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95-1/"/>
     <url>/2021/12/08/cocos2d-x%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95-1/</url>
     
