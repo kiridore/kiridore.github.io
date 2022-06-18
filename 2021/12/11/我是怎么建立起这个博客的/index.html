@@ -24,9 +24,10 @@
 <meta property="og:description" content="关于本站建立过程的一个流水账简单记录,GitPage+Hexo的免费博客建立方法">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/howtobuildBlog/open_git_bash.png">
+<meta property="og:image" content="http://example.com/2021/12/11/%E6%88%91%E6%98%AF%E6%80%8E%E4%B9%88%E5%BB%BA%E7%AB%8B%E8%B5%B7%E8%BF%99%E4%B8%AA%E5%8D%9A%E5%AE%A2%E7%9A%84/%5Cimg%5ChowtobuildBlog%5Csha_sample.png">
 <meta property="og:image" content="http://example.com/img/howtobuildBlog/setup_github_page.png">
 <meta property="article:published_time" content="2021-12-10T16:35:50.000Z">
-<meta property="article:modified_time" content="2022-06-18T08:47:15.647Z">
+<meta property="article:modified_time" content="2022-06-18T12:04:12.847Z">
 <meta property="article:author" content="kiritani dore">
 <meta property="article:tag" content="博客">
 <meta property="article:tag" content="hexo">
@@ -200,7 +201,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.1k 字
+      3.2k 字
     </span>
   
 
@@ -262,7 +263,7 @@
 <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog">git <span class="hljs-keyword">config</span> --<span class="hljs-keyword">global</span> user<span class="hljs-variable">.name</span> <span class="hljs-string">&quot;你的GitHub用户名&quot;</span><br>git <span class="hljs-keyword">config</span> --<span class="hljs-keyword">global</span> user<span class="hljs-variable">.email</span> <span class="hljs-string">&quot;你的GitHub注册邮箱&quot;</span><br></code></pre></td></tr></table></figure>
 <p>并且生成ssh密钥文件：</p>
 <figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs excel">ssh-keygen -<span class="hljs-built_in">t</span> rsa -C <span class="hljs-string">&quot;你的GitHub注册邮箱&quot;</span><br></code></pre></td></tr></table></figure>
-<p>之后直接回车跳过所有选项，找到生成好的密钥文件。接着打开<a target="_blank" rel="noopener" href="https://github.com/settings/keys">Github_Setting_Key</a>，新建一个SSH key，把刚才公钥部分<span class="label label-info">id_rsa.pub</span>里所有内容粘贴到Key文本框中，然后title随便取个名字，点击<span class="label label-info">Add SSH Key</span>保存。</p>
+<p>之后直接回车跳过所有选项，找到生成好的密钥文件。生成结束后就能看到这样的输出<br><img src="%5Cimg%5ChowtobuildBlog%5Csha_sample.png" srcset="/img/loading.gif" lazyload><br>可以看到公钥文件已经保存在了<code>/c/User/pc/.ssh/id_rsa.pub</code>里，用任意文本编辑工具就能打开。接着打开<a target="_blank" rel="noopener" href="https://github.com/settings/keys">Github_Setting_Key</a>，新建一个SSH key，把刚才公钥部分<span class="label label-info">id_rsa.pub</span>里所有内容粘贴到Key文本框中，然后title随便取个名字，点击<span class="label label-info">Add SSH Key</span>保存。</p>
 <p>之后在Git Bash中输入<code>ssh git@github.com</code>, 结果为:</p>
 <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript">PTY allocation request failed <span class="hljs-keyword">on</span> channel <span class="hljs-number">0</span><br>Hi username! You&#x27;ve successfully authenticated, <span class="hljs-keyword">but</span> GitHub <span class="hljs-keyword">does</span> <span class="hljs-keyword">not</span> provide shell access.<br>Connection <span class="hljs-keyword">to</span> github.com closed.<br></code></pre></td></tr></table></figure>
 <p>就说明连接成功。<br>同时也有可能输出一大段文本，然后询问你:</p>
