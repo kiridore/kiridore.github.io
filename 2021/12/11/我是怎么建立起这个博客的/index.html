@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://example.com/img/howtobuildBlog/open_git_bash.png">
 <meta property="og:image" content="http://example.com/img/howtobuildBlog/setup_github_page.png">
 <meta property="article:published_time" content="2021-12-10T16:35:50.000Z">
-<meta property="article:modified_time" content="2021-12-14T01:38:09.578Z">
+<meta property="article:modified_time" content="2022-06-18T08:47:15.647Z">
 <meta property="article:author" content="kiritani dore">
 <meta property="article:tag" content="博客">
 <meta property="article:tag" content="hexo">
@@ -200,7 +200,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3k 字
+      3.1k 字
     </span>
   
 
@@ -209,7 +209,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9 分钟
+      10 分钟
     </span>
   
 
@@ -265,7 +265,9 @@
 <p>之后直接回车跳过所有选项，找到生成好的密钥文件。接着打开<a target="_blank" rel="noopener" href="https://github.com/settings/keys">Github_Setting_Key</a>，新建一个SSH key，把刚才公钥部分<span class="label label-info">id_rsa.pub</span>里所有内容粘贴到Key文本框中，然后title随便取个名字，点击<span class="label label-info">Add SSH Key</span>保存。</p>
 <p>之后在Git Bash中输入<code>ssh git@github.com</code>, 结果为:</p>
 <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript">PTY allocation request failed <span class="hljs-keyword">on</span> channel <span class="hljs-number">0</span><br>Hi username! You&#x27;ve successfully authenticated, <span class="hljs-keyword">but</span> GitHub <span class="hljs-keyword">does</span> <span class="hljs-keyword">not</span> provide shell access.<br>Connection <span class="hljs-keyword">to</span> github.com closed.<br></code></pre></td></tr></table></figure>
-<p>就说明连接成功。</p>
+<p>就说明连接成功。<br>同时也有可能输出一大段文本，然后询问你:</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livescript">Are you sure you want <span class="hljs-keyword">to</span> <span class="hljs-keyword">continue</span> connecting (<span class="hljs-literal">yes</span><span class="hljs-regexp">/no/</span>[fingerprint])? <br></code></pre></td></tr></table></figure>
+<p>这种情况一般发生在第一次链接github的时候，无脑输入yes就完事了。</p>
 <div class="note note-success">
             <p><strong>TIP</strong><br>当前Github推出了新的Personal Access Token(PATs)功能，后续通过hexo提交页面时登录可能需要输入你的PAT，而不是你的密码。如果上传失败，仔细阅读报错就能发现是否需要PAT，并按照<a target="_blank" rel="noopener" href="https://docs.github.com/cn/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"><strong>官方文档</strong></a>创建一个。</p>
           </div>
